@@ -244,14 +244,17 @@ void Chip8::emulate_cycle(){
                     pc += 2;
                     break;
                 case 0x000A:{ // FX0A - wait for key press, store in v[x]
-                    bool key_pressed = false;
-                    for(int i=0; i<16; i++){
-                        if(key[i] != 0){
-                            v[(opcode & 0x0F00) >> 8] = i;
-                            key_pressed = true;
-                            break;
+                    bool key_pressed = false;                   
+                    while (key_pressed == false){
+                        for(int i = 0; i < 16; i++){
+                            if(key[i] != 0){
+                                v[(opcode & 0x0F00) >> 8] = i;
+                                key_pressed = true;
+                                break;
+                            }
                         }
                     }
+
                     pc += 2;
                 }
                     break;
@@ -274,7 +277,7 @@ void Chip8::emulate_cycle(){
                 case 0x0033:{ // FX33 - store BCD representation of v[x] at index
                     uint8_t value = v[(opcode & 0x0F00) >> 8];
                     memory[index] = value/100;
-                    memory[index+1] = value/10;
+                    memory[index+1] = (value/10) % 10;
                     memory[index+2] = value%10;
                     pc += 2;
                 }
