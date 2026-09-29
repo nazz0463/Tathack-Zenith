@@ -101,7 +101,25 @@ void handle_input(Chip8& chip8, bool& running){
             if(event.key.keysym.sym == SDLK_ESCAPE) running = false;
 
             // If b is pressed, change color_index to next color in colors
-            if(event.key.keysym.sym == SDLK_b) chip8.color_index = (chip8.color_index + 1) % 8;
+            if(event.key.keysym.sym == SDLK_b) {
+                chip8.color_index = (chip8.color_index + 1) % 8;
+                std::cout << "Color changed to #" << std::hex << colors[chip8.color_index] << std::endl;
+            }
+
+            if (event.key.keysym.sym == SDLK_n) {
+                chip8.cycles_per_frame -= 1;
+                if (chip8.cycles_per_frame < 1) chip8.cycles_per_frame = 1;
+                
+                std::cout << "Cycles per frame reduced to " << (int)chip8.cycles_per_frame << std::endl;
+            }
+
+            if (event.key.keysym.sym == SDLK_m) {
+                chip8.cycles_per_frame += 1;
+                if (chip8.cycles_per_frame > 254) chip8.cycles_per_frame = 254;
+
+                std::cout << "Cycles per frame increased to " << (int)chip8.cycles_per_frame << std::endl;
+            }
+
 
             // Check which Chip-8 key was pressed
             for(int i=0; i<16; i++){
@@ -159,8 +177,10 @@ int main(int argc, char** argv){
     
     bool running = true;
     while(running){
+        
         handle_input(chip8, running);
-        for(int i=0; i<10; i++){
+        
+        for(int i = 0; i < chip8.cycles_per_frame; i++){
             chip8.emulate_cycle();
         }
 
