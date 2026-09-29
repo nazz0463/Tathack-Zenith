@@ -10,4 +10,7 @@ In chip8.cpp
         the Chip8 class has a draw_flag variable
         supposedly to signal when to draw a new frame to screen
         but it is never used
+    fx0a instruction
+        supposed to wait for a key press
+        doesnt actually wait and only checks key presses once
 
