@@ -36,6 +36,18 @@ uint8_t keymap[16] = {
     SDLK_v  // F
 };
 
+uint32_t colors[8] = {
+    0xFFFFFF,  //white
+    0x66FF00,  //lime green
+    0xFF0080,  //neon pink
+    0x00BFFF,  //sky blue
+    0xED2939,  //red
+    0x008080,  //teal
+    0xFFD700,  //gold
+    0xC9A0DC   //violet
+};
+
+
 void audio_callback(void* userdata, uint8_t* stream, int len){
     static uint32_t sample_index = 0;
     int16_t* audio_buffer = (int16_t*) stream;
@@ -59,16 +71,24 @@ void draw_graphics(SDL_Renderer* renderer, Chip8& chip8){
     // Clear screen
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
-    // Drawing white pixels
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    for(int y=0; y<32; y++){
-        for(int x=0; x<64; x++){
+    
+    // Get color from colors list and extract red, green and blue components
+    uint32_t color = colors[chip8.color_index];
+    uint8_t R = (color & 0xFF0000) >> 16;
+    uint8_t G = (color & 0x00FF00) >> 8;
+    uint8_t B =  color & 0x0000FF;
+
+    SDL_SetRenderDrawColor(renderer, R, G, B, 255);
+
+    for(int y = 0; y < 32; y++){
+        for(int x = 0; x < 64; x++){
             if(chip8.display[x + (y*64)] == 1){
                 SDL_Rect rect = {x*SCALE, y*SCALE, SCALE, SCALE};
                 SDL_RenderFillRect(renderer, &rect);
             }
         }
     }
+
     SDL_RenderPresent(renderer);
 }
 
@@ -79,6 +99,10 @@ void handle_input(Chip8& chip8, bool& running){
         if(event.type == SDL_QUIT) running = false;
         if(event.type == SDL_KEYDOWN){
             if(event.key.keysym.sym == SDLK_ESCAPE) running = false;
+
+            // If b is pressed, change color_index to next color in colors
+            if(event.key.keysym.sym == SDLK_b) chip8.color_index = (chip8.color_index + 1) % 8;
+
             // Check which Chip-8 key was pressed
             for(int i=0; i<16; i++){
                 if(event.key.keysym.sym == keymap[i]) chip8.key[i] = 1;
