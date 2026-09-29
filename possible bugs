@@ -1,0 +1,18 @@
+In main.cpp
+    main while loop timing
+        emulates 10 cycles in one loop iteration
+        with delay of 16 ms between each cycle
+        could have errors
+
+
+In chip8.cpp
+    draw_flag
+        the Chip8 class has a draw_flag variable
+        supposedly to signal when to draw a new frame to screen
+        but it is never used
+    fx0a instruction
+        supposed to wait for a key press
+        doesnt actually wait and only checks key presses once
+    fx33 instruction
+        supposed to store decimal valuea in v[x]
+        there might be an error in extracting decimal values
