@@ -13,6 +13,9 @@ class Chip8{
         uint8_t display[64*32];
         uint8_t key[16]; // Keyboard of 16 keys
         uint8_t get_sound_timer() const {return sound_timer;} // For getting the value of sound timer
+        uint8_t cycles_per_frame;
+        uint8_t color_index;
+
     private:
         uint8_t memory[4096]; // Memory of 4KB
         uint8_t v[16]; // 16 registers, V0 to VF
