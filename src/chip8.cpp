@@ -44,6 +44,9 @@ void Chip8::initialise(){
     delay_timer = 0;
     sound_timer = 0;
     draw_flag = false;
+    cycles_per_frame = 10;
+    color_index = 0;
+
 }
 
 void Chip8::load_fonts(){
