@@ -247,18 +247,22 @@ void Chip8::emulate_cycle(){
                     pc += 2;
                     break;
                 case 0x000A:{ // FX0A - wait for key press, store in v[x]
-                    bool key_pressed = false;                   
-                    while (key_pressed == false){
-                        for(int i = 0; i < 16; i++){
-                            if(key[i] != 0){
-                                v[(opcode & 0x0F00) >> 8] = i;
-                                key_pressed = true;
-                                break;
-                            }
+                    bool key_pressed = false;
+                    for(int i = 0; i < 16; i++){
+                        if(key[i] != 0){
+                            v[(opcode & 0x0F00) >> 8] = i;
+                            key_pressed = true;
+                            break;
                         }
                     }
 
-                    pc += 2;
+                    // Only move on if key is pressed
+                    // otherwise repeat this instruction
+                    if (key_pressed == true){
+                        pc += 2;
+                    }
+
+
                 }
                     break;
                 case 0x0015: // FX15 - delay_timer = v[x]
