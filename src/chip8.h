@@ -15,6 +15,8 @@ class Chip8{
         uint8_t get_sound_timer() const {return sound_timer;} // For getting the value of sound timer
         uint8_t cycles_per_frame;
         uint8_t color_index;
+        void save_state();
+        void load_state();
 
     private:
         uint8_t memory[4096]; // Memory of 4KB
