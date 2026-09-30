@@ -314,3 +314,48 @@ void Chip8::emulate_cycle(){
         sound_timer--;
     }
 }
+
+void Chip8::save_state(){
+    
+    std::ofstream file("savefile", std::ios::binary | std::ios::trunc);
+
+    file.write((char*)memory, sizeof(memory));
+    file.write((char*)v, sizeof(v));
+    file.write((char*)stack, sizeof(stack));
+    file.write((char*)display, sizeof(display));
+    file.write((char*)key, sizeof(key));
+    file.write((char*)&index, sizeof(index));
+    file.write((char*)&pc, sizeof(pc));
+    file.write((char*)&sp, sizeof(sp));
+    file.write((char*)&delay_timer, sizeof(delay_timer));
+    file.write((char*)&sound_timer, sizeof(sound_timer));
+    file.write((char*)&cycles_per_frame, sizeof(cycles_per_frame));
+    file.write((char*)&color_index, sizeof(color_index));
+
+    file.close();
+
+    std::cout << "Saved process state" << std::endl;
+
+}
+
+void Chip8::load_state(){
+
+    std::ifstream file("savefile", std::ios::binary);
+
+    file.read((char*)memory, sizeof(memory));
+    file.read((char*)v, sizeof(v));
+    file.read((char*)stack, sizeof(stack));
+    file.read((char*)display, sizeof(display));
+    file.read((char*)key, sizeof(key));
+    file.read((char*)&index, sizeof(index));
+    file.read((char*)&pc, sizeof(pc));
+    file.read((char*)&sp, sizeof(sp));
+    file.read((char*)&delay_timer, sizeof(delay_timer));
+    file.read((char*)&sound_timer, sizeof(sound_timer));
+    file.read((char*)&cycles_per_frame, sizeof(cycles_per_frame));
+    file.read((char*)&color_index, sizeof(color_index));
+
+    file.close();
+
+    std::cout << "Loaded process state" << std::endl;
+}
