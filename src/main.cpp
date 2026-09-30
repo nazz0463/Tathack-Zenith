@@ -103,7 +103,7 @@ void handle_input(Chip8& chip8, bool& running){
             // If b is pressed, change color_index to next color in colors
             if(event.key.keysym.sym == SDLK_b) {
                 chip8.color_index = (chip8.color_index + 1) % 8;
-                std::printf("Color changed to #%06x\n", chip8.cycles_per_frame);
+                std::printf("Color changed to #%06x\n", colors[chip8.color_index]);
             }
 
             if (event.key.keysym.sym == SDLK_n) {
